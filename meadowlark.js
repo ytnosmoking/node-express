@@ -2,6 +2,8 @@ let express = require('express');
 let app = express();
 let handlebars = require('express3-handlebars').create({ defaultLayout: "main" })
 
+let fortune = require(__dirname + '/lib/fortune.js');
+
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars')
 
@@ -9,13 +11,7 @@ app.set('port', process.env.PORT || 3000);
 
 app.use(express.static(__dirname + '/public'))
 
-let fortunes = [
-    "Conquer your fears or they will conquer you",
-    "River need springs",
-    "Do not fear what you don't know",
-    "You will have a pleasant surprise.",
-    "Whenever possible, keep it simple."
-]
+
 
 
 app.get('/', (req, res) => {
@@ -27,8 +23,8 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
     // res.type('text/plain')
     // res.send('About Meadowlark Travel')
-    var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)]
-    res.render('about', { fortune: randomFortune })
+
+    res.render('about', { fortune: fortune.getFortune() })
 })
 
 
